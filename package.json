@@ -1,0 +1,23 @@
+{
+  "name": "first-server",
+  "version": "1.0.0",
+  "description": "out first nodeJS server",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "nodemon server.js" 
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ChaitanyaMarvel/first-server.git"
+  },
+  "author": "chaitanya",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ChaitanyaMarvel/first-server/issues"
+  },
+  "homepage": "https://github.com/ChaitanyaMarvel/first-server#readme",
+  "dependencies": {
+    "nodemon": "^2.0.20"
+  }
+}
