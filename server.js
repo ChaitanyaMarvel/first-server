@@ -1,48 +1,47 @@
-//server creation
-
-const http = require("http");
+const express = require("express");
+//initailization of express
+const app = express();
+//appln use json format for the data transfer
+app.use(express.json());
 
 const port = 8081;
-const toDoList = ["need to learn", "need to code"];
 
-http
-  .createServer((req, res) => {
-    // res.writeHead(200, { "Content-Type": "text/html" });
-    // res.write("<h4>Hello, this is from my new server</h4>");
-    // res.end();
-    const { method, url } = req;
-    // console.log(method,url);
-    // res.end();
-    if(url === "/todos"){
-      // http://localhost:8081/todos
-      if(method === "GET"){
-        res.writeHead(200, {"Content-Type" : "text/html"});
-        res.write(toDoList.toString());
-      }else if(method === "POST"){
-        let body = "";
-        req.on('error',(err) => {
-          console.log(err);
-        }).on('data', (chunk) => {
-          body += chunk;
-          // console.log(chunk);
-        }).on('end', () => {
-          body = JSON.parse(body);
-          console.log("body data",body);
-        });
-      }
-      else{
-        res.writeHead(501);
-      }
-    }
-    else{
-      res.writeHead(404);
-    }
-    res.end();0
-  })
-  .listen(port, () => {
-    console.log(`My node js server has sarted at port ${port}`);
+const toDoList = ["Need to learn", "need to code"];
+
+// http://localhost:8081/todos
+app.get("/todos", (req,res) => {
+  res.status(200).send(toDoList);
+});
+
+app.post("/todos", (req,res) => {
+  let newToDoItem = req.body.item;
+  toDoList.push(newToDoItem);
+  res.status(201).send({
+    message: "The to do got added successfully"
   });
+});
 
-// http://localhost:8081
-//http://localhost:8081/
-//http://localhost:8081/home
+app.delete("/todos", (req,res) => {
+  const itemToDelete = req.body.item;
+
+  toDoList.find((element, index) => {
+    if(element === itemToDelete){
+      toDoList.slice(index,1);
+    }
+  });
+  res.status(202).send({
+    message: `Deleted item - ${req.body.item}`,
+  });
+});
+
+app.all("/todos", (req,res) => {
+  res.status(501).send();
+});
+
+app.all("*", (req,res) => {
+  res.status(501),send();
+});
+
+app.listen(port,() => {
+  console.log(`Node js server started on ${port}`);
+});
